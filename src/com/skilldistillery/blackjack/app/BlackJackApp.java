@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import com.skilldistillery.blackjack.entities.Dealer;
 import com.skilldistillery.blackjack.entities.Player;
+import com.skilldistillery.blackjack.entities.BlackJackHand;
 
 public class BlackJackApp {
 	private Player player = new Player();
@@ -22,10 +23,10 @@ public class BlackJackApp {
 		while (isPlaying) {
 			if (scan.nextInt() == 1) {
 				dealer.shuffledeck();
+				
 				dealer.dealInitialRound(player);
 				dealer.dealInitialRound(dealer);
 
-				// perhaps make this a new method
 				System.out.println("Player cards are :" + player);
 				System.out.println("Your total value is: " + player.getHandValue());
 
@@ -50,21 +51,25 @@ public class BlackJackApp {
 	}
 
 	public void playerMakeDecision() {
-		// if playerMakedecision = true
 		System.out.println("What would you like to do? ");
 		String choice = scan.next();
-		if (choice.toLowerCase().equals("hit")) {
-			System.out.println("current total " + player.getHandValue());
+		while (choice.toLowerCase().equals("hit")) {
+			System.out.println("previous total " + player.getHandValue());
 			dealer.dealSingleCard(player);
-			System.out.println(player.getHandValue());
-			
-		} else if (choice.toLowerCase().equals("stand")) {
-			System.out.println("Your new value is: " + player.getHandValue());
-			System.out.println("I will Stand");
-		} else
-			System.out.println("Incorrect input try again");
+			System.out.println("New total " + player.getHandValue());
+			if (player.getHandValue() >= 21) {
+				System.out.println("Your hand value is: " + player.getHandValue());
+			}
+			System.out.println("What would you like to do? Hit or Stand?");
+			choice = scan.next();
+		}
+		if (choice.toLowerCase().equals("stand")) {
+			System.out.println("I will stand. The final hand value is: " + player.getHandValue());
+		} else {
+			System.out.println("Incorrect input. Please try again.");
+		}
 	}
-	
+
 	public void dealerMakeDecision() {
 		System.out.println("Dealers turn: ");
 		if (dealer.getHandValue() <= 17) {
@@ -77,23 +82,23 @@ public class BlackJackApp {
 
 	public void winnerWinnerChickenDinner() {
 
-			System.out.println("Dealers total value is: " + dealer.getHandValue());
-			System.out.println("Your total value is: " + player.getHandValue());
-			if (dealer.getHandValue() > player.getHandValue() && dealer.getHandValue() <= 21
-					|| dealer.getHandValue() == 21 || player.getHandValue() > 21 && dealer.getHandValue() < 21) {
-				System.out.println("House wins");
-			} else if (dealer.getHandValue() < player.getHandValue() && player.getHandValue() <= 21
-					|| player.getHandValue() == 21) {
-				System.out.println("Player wins!");
-			} else if (player.getHandValue() == dealer.getHandValue()) {
-				System.out.println("Tie");
-			} else {
-				System.out.println("Nobody Wins");
-			}
+		System.out.println("Dealers total value is: " + dealer.getHandValue());
+		System.out.println("Your total value is: " + player.getHandValue());
+		if (dealer.getHandValue() > player.getHandValue() && dealer.getHandValue() <= 21 || dealer.getHandValue() == 21
+				|| player.getHandValue() > 21 && dealer.getHandValue() < 21) {
+			System.out.println("House wins");
+		} else if (dealer.getHandValue() < player.getHandValue() && player.getHandValue() <= 21
+				|| player.getHandValue() == 21) {
+			System.out.println("Player wins!");
+		} else if (player.getHandValue() == dealer.getHandValue()) {
+			System.out.println("Tie");
+		} else {
+			System.out.println("Nobody Wins");
+			
 		}
 	}
-
-
+	
+}
 
 // dealer deals the cards
 // dealer deals two face up cards to the player
