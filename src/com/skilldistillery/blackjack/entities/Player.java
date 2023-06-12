@@ -7,6 +7,9 @@ public class Player {
 	Scanner scan = new Scanner(System.in);
 	protected Hand hand;
 
+	public void clearHand() {
+		hand.clearHand();
+	}
 	
 	public Player() {
 		this.hand = new BlackJackHand();

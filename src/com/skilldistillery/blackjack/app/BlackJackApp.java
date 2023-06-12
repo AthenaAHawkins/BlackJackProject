@@ -3,6 +3,7 @@ package com.skilldistillery.blackjack.app;
 import java.util.Scanner;
 
 import com.skilldistillery.blackjack.entities.Dealer;
+import com.skilldistillery.blackjack.entities.Hand;
 import com.skilldistillery.blackjack.entities.Player;
 import com.skilldistillery.blackjack.entities.BlackJackHand;
 
@@ -10,6 +11,7 @@ public class BlackJackApp {
 	private Player player = new Player();
 	private Dealer dealer = new Dealer();
 	private Scanner scan = new Scanner(System.in);
+	private BlackJackHand hand = new BlackJackHand();
 
 	public static void main(String[] args) {
 		BlackJackApp blackJack = new BlackJackApp();
@@ -22,8 +24,8 @@ public class BlackJackApp {
 		boolean isPlaying = true;
 		while (isPlaying) {
 			if (scan.nextInt() == 1) {
+				scan.nextLine();
 				dealer.shuffledeck();
-				
 				dealer.dealInitialRound(player);
 				dealer.dealInitialRound(dealer);
 
@@ -36,16 +38,18 @@ public class BlackJackApp {
 				} else {
 					System.out.println("Dealers cards are: " + dealer);
 				}
-				// set isPlaying to outcome of playerMakeDecision / dealerMakeDecision
-				// wrap winnerwinnner in if check
-				// if is playing do xyz otherwise reset
 				playerMakeDecision();
 				dealerMakeDecision();
 				winnerWinnerChickenDinner();
+				System.out.println("Would you like to play again? ");
+				String choice = scan.nextLine();
+				if (choice.equalsIgnoreCase("yes")) {
+					player.clearHand();
 
-			} else {
-				System.out.println("Thanks for playing! Goodbye!");
-				isPlaying = false;
+				} else {
+					System.out.println("Thanks for playing! Goodbye!");
+					isPlaying = false;
+				}
 			}
 		}
 	}
@@ -94,10 +98,10 @@ public class BlackJackApp {
 			System.out.println("Tie");
 		} else {
 			System.out.println("Nobody Wins");
-			
+
 		}
 	}
-	
+
 }
 
 // dealer deals the cards
