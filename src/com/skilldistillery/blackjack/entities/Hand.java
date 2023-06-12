@@ -18,7 +18,7 @@ public abstract class Hand {
 	public abstract int getHandValue();
 
 	public void clear() {
-
+		hand.clear();
 	}
 
 

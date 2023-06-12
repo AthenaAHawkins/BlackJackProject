@@ -6,58 +6,95 @@ import com.skilldistillery.blackjack.entities.Dealer;
 import com.skilldistillery.blackjack.entities.Player;
 
 public class BlackJackApp {
-	Scanner scan = new Scanner(System.in);
+	private Player player = new Player();
+	private Dealer dealer = new Dealer();
+	private Scanner scan = new Scanner(System.in);
+
 	public static void main(String[] args) {
 		BlackJackApp blackJack = new BlackJackApp();
 		blackJack.run();
 	}
 
 	public void run() {
-		Player player = new Player();
-		Dealer dealer = new Dealer();
-		
 		System.out.println("It's time for BlackJack! ");
 		System.out.println("Select 1 to play or 2 to quit");
-		
 		boolean isPlaying = true;
-		if (scan.nextInt() == 1) {
-			dealer.shuffledeck();
-		dealer.dealInitialRound(player);
-		dealer.dealInitialRound(dealer);
-		System.out.println("Player cards are :" + player);
-		System.out.println(player.getHandValue());
-		if(player.getHandValue() == 21) {
-			System.out.println("BLACKJACK");
-			run();
-		} else {
-		System.out.println("Dealers cards are: " + dealer);
+		while (isPlaying) {
+			if (scan.nextInt() == 1) {
+				dealer.shuffledeck();
+				dealer.dealInitialRound(player);
+				dealer.dealInitialRound(dealer);
+
+				// perhaps make this a new method
+				System.out.println("Player cards are :" + player);
+				System.out.println("Your total value is: " + player.getHandValue());
+
+				if (player.getHandValue() == 21) {
+					System.out.println("BLACKJACK");
+
+				} else {
+					System.out.println("Dealers cards are: " + dealer);
+				}
+				// set isPlaying to outcome of playerMakeDecision / dealerMakeDecision
+				// wrap winnerwinnner in if check
+				// if is playing do xyz otherwise reset
+				playerMakeDecision();
+				dealerMakeDecision();
+				winnerWinnerChickenDinner();
+
+			} else {
+				System.out.println("Thanks for playing! Goodbye!");
+				isPlaying = false;
+			}
+		}
+	}
+
+	public void playerMakeDecision() {
+		// if playerMakedecision = true
 		System.out.println("What would you like to do? ");
-		}
-		System.out.println(dealer.getHandValue());
-		}
-		else {
-			System.out.println("Thanks for playing! Goodbye!");
-			isPlaying = false;
-		}
-		
-		
-		
-		}
-		
-		
-		
+		String choice = scan.next();
+		if (choice.toLowerCase().equals("hit")) {
+			System.out.println("current total " + player.getHandValue());
+			dealer.dealSingleCard(player);
+			System.out.println(player.getHandValue());
 			
-
-		// dealer deals the cards
-	//dealer deals two face up cards to the player
-//dealer deals one face up card to themselves and one face down
-		
-
-//		System.out.println(player);
-//		System.out.println(dealer);
+		} else if (choice.toLowerCase().equals("stand")) {
+			System.out.println("Your new value is: " + player.getHandValue());
+			System.out.println("I will Stand");
+		} else
+			System.out.println("Incorrect input try again");
 	}
 	
-	
+	public void dealerMakeDecision() {
+		System.out.println("Dealers turn: ");
+		if (dealer.getHandValue() <= 17) {
+			dealer.dealSingleCard(dealer);
+			System.out.println("Dealer Hits");
+		} else if (dealer.getHandValue() > 17) {
+			System.out.println("The dealer stands");
+		}
+	}
+
+	public void winnerWinnerChickenDinner() {
+
+			System.out.println("Dealers total value is: " + dealer.getHandValue());
+			System.out.println("Your total value is: " + player.getHandValue());
+			if (dealer.getHandValue() > player.getHandValue() && dealer.getHandValue() <= 21
+					|| dealer.getHandValue() == 21 || player.getHandValue() > 21 && dealer.getHandValue() < 21) {
+				System.out.println("House wins");
+			} else if (dealer.getHandValue() < player.getHandValue() && player.getHandValue() <= 21
+					|| player.getHandValue() == 21) {
+				System.out.println("Player wins!");
+			} else if (player.getHandValue() == dealer.getHandValue()) {
+				System.out.println("Tie");
+			} else {
+				System.out.println("Nobody Wins");
+			}
+		}
+	}
 
 
 
+// dealer deals the cards
+// dealer deals two face up cards to the player
+//dealer deals one face up card to themselves and one face down

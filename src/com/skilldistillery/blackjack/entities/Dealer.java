@@ -24,10 +24,13 @@ public class Dealer extends Player {
 		player.addCardToHand(willBeGivenTheSecond);
 	}
 
-	
 
 	public Card hit() {
 		return deck.dealCard();
+	}
+	public void dealSingleCard(Player player) {
+		Card willBeGivenIfHit = deck.dealCard();
+		player.addCardToHand(willBeGivenIfHit);
 	}
 	
 	
